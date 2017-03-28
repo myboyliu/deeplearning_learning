@@ -30,5 +30,8 @@ print(list)
 tuple=('a','b')
 print(tuple);
 
+dict = {"a":1,"b":2}
+print(dict);
+print(dict['a']);
 
 

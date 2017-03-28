@@ -15,7 +15,7 @@ else :
 x=[]
 #x=''
 if x:
- 	print("零数值、or 空字符串 or 非空list")
+	print("零数值、or 空字符串 or 非空list")
 
 if not x:
 	print("零数值 or 空字符串 or 空list")
@@ -35,5 +35,5 @@ for num in list:
 print('=========')
 index=0;
 while index <= len(list)-1 :
-    print(list[index])
+	print(list[index])
     index=index+1

@@ -15,12 +15,13 @@
 	- 字符串长度
 	- 字符串转码
 	- 类型转换
-- 4.py 数组
+- 4.py 集合 list,tuble,dict,set
 	- list 添加,插入,删除,替换
 	- tuble 不可变数组
 	- 数组长度
 - 5.py 条件
 	- 条件判断 if elif else
-	- 
+	- 循环 for while
+	
 
 	
