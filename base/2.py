@@ -37,3 +37,7 @@ b''')
 print('''a
 \n
 b''')
+
+
+# 检测数据类型
+print(isinstance('啊', (int, float)))
