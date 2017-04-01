@@ -1,4 +1,5 @@
 import pycurl
+
 from io import StringIO
 from io import BytesIO
 b = BytesIO();
