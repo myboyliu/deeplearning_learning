@@ -3,7 +3,7 @@
 filepath=$(cd "$(dirname "$0")";cd ../; pwd)		#父级目录
 
 train_img_dir=$filepath'/data/invoice/img/'
-train_img_file='09089630-6405-43cg-4l28-n204ag3t5dtk.jpg'
+train_img_file='09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg'
 train_img_file_path=$train_img_dir$train_img_file
 echo 'training:'$train_img_file_path
 train_dir=$filepath'/data/invoice/train/'
@@ -23,6 +23,9 @@ tesseract_test_data_dir='/usr/local/Cellar/tesseract/3.05.00/share/tessdata/'
 
 #复制到目标目录
 cp -f $train_img_file_path $train_dir$train_file_name_jpg
+
+
+
 #进入训练目录
 cd $train_dir
 #转换图片为tif文件和box文件,如有了则不重新生成了
