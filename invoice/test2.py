@@ -115,8 +115,19 @@ while index_x <im.size[0] :
     index_x+=width
     index_y=0
 #线的检测
-#切割后的图片检测
 
+image, cnts, hierarchy = cv2.findContours(img.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+img= cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+for c in cnts:
+    (x, y, w, h) = cv2.boundingRect(c)
+    cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+cv2.imwrite(my_file_1,img)
+cv2.imshow('image',img)
+cv2.waitKey(0)
+    #img1 = cv2.GaussianBlur(img1,(5,5),0)
+
+#edges = cv2.Canny(img1, 10, 200, 5)
+#lines = cv2.HoughLinesP(edges,1,np.pi/180,50,minLineLength,maxLineGap)
 
 #img = cv2.GaussianBlur(newimg,(5,5),0)
 #img=newimg
@@ -125,8 +136,7 @@ while index_x <im.size[0] :
 #result = img.copy()
 
 #经验参数
-#minLineLength = 50
-#maxLineGap = 40
+
 #lines = cv2.HoughLinesP(edges,1,np.pi/180,50,minLineLength,maxLineGap)
 #print(len(lines))
 #index_line=0;

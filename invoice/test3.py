@@ -12,7 +12,8 @@ myfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk.jpg
 newfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg"
 #方格检测图片
 my_file_1 = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_1.jpg"
-
+#图形矫正
+my_file_2 = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_2.jpg"
 newfile_dir = project_dir+"/data/invoice/img"
 tesseract_exe_name = 'tesseract' # Name of executable to be called at command line
 scratch_image_name = "temp.bmp" # This file must be .bmp or other Tesseract-compatible format
@@ -74,22 +75,8 @@ im = Image.open(myfile)
 pix = im.load()
 width = im.size[0]
 height = im.size[1]
-#for x in range(width):
-#    for y in range(height):
-#        r, g, b = pix[x, y]
-#        print(pix[x, y]);
-
-#转化到灰度图
-#im = im.convert("RGB")
 im = im.convert('L')
 
-#im=im.point(lambda i : i*1.3) #对每一个像素点进行增强
-
-#im = im.point(table,'1')
-
-#保存图像
-#im.save(newfile)
-#print(im.size)
 index_x = 0
 index_y=0
 width=500
@@ -114,49 +101,28 @@ while index_x <im.size[0] :
         index_y+=height
     index_x+=width
     index_y=0
-#线的检测
-#切割后的图片检测
-
-
-#img = cv2.GaussianBlur(newimg,(5,5),0)
-#img=newimg
-#edges = cv2.Canny(img, 10, 200, 5)
-#lines = cv2.HoughLines(edges,1,np.pi/180,118)
-#result = img.copy()
-
-#经验参数
-#minLineLength = 50
-#maxLineGap = 40
-#lines = cv2.HoughLinesP(edges,1,np.pi/180,50,minLineLength,maxLineGap)
-#print(len(lines))
-#index_line=0;
-#img= cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
-#while index_line<len(lines) :
-#    for x1,y1,x2,y2 in lines[index_line]:
-#        cv2.line(img,(x1,y1),(x2,y2),(0,155,0),10)
-#    index_line+=1;
-
-
-#im = Image.fromarray(img, None)
-#im.save(newfile)
+#轮廓的检测
 #
-#box = (0, 1000, 500, 1500)
-#region = im.crop(box)
-#region.show()
-#region = region.transpose(Image.ROTATE_180)
-#im.paste(region, box)
-#im.show()
-#
-#out.save(newfile)
-#text = image_to_string(im)
-#print(text)
+image, cnts, hierarchy = cv2.findContours(img.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+img= cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+#查找角度
+same_point_num_map={}
+same_point_num_max=0
+same_point_max=[]
+same_point__max_cnts=[]
+for c in cnts:
+    (x, y, w, h) = cv2.boundingRect(c)
+    same_key = x+'_'+y
+    same_point_num = same_point_num_map[same_key]
+    if same_point_num != None :
+        same_point_num+=1
+    else:
+        same_point_num=0
+    same_point_num_map[same_key]=same_point_num
+    if same_point_num > same_point_num_max :
+        same_point_num_max = same_point_num
+        same_point_max=(x, y)
+        same_point__max_cnts.append((x, y, w, h))
+    cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+cv2.imwrite(my_file_2,img)
 
-
-
-
-
-#矩形检测
-
-
-#contours = cv2.findContours(newimg,cv2.RETR_CCOMP,cv2.CHAIN_APPROX_SIMPLE)
-#print(contours)
