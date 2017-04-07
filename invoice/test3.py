@@ -7,122 +7,129 @@ import numpy as np
 
 py_dir = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(py_dir)
-myfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk.jpg"
+#file_name='09089630-6405-43cg-4l28-n204ag3t5dtk'
+file_name='tes1'
+myfile = project_dir+"/data/invoice/img/"+file_name+".jpg"
+#myfile = project_dir+"/data/invoice/img/111.jpg"
 #二值化图片
-newfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg"
+newfile = project_dir+"/data/invoice/img/"+file_name+"_new.jpg"
 #方格检测图片
-my_file_1 = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_1.jpg"
+my_file_1 = project_dir+"/data/invoice/img/"+file_name+"_new_1.jpg"
 #图形矫正
-my_file_2 = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_2.jpg"
+my_file_2 = project_dir+"/data/invoice/img/"+file_name+"_new_2.jpg"
+my_file_3 = project_dir+"/data/invoice/img/"+file_name+"_new_3.jpg"
 newfile_dir = project_dir+"/data/invoice/img"
-tesseract_exe_name = 'tesseract' # Name of executable to be called at command line
-scratch_image_name = "temp.bmp" # This file must be .bmp or other Tesseract-compatible format
-scratch_text_name_root = "temp" # Leave out the .txt extension
-cleanup_scratch_flag = True  # Temporary files cleaned up after OCR operation
 
-def image_to_scratch(im, scratch_image_name):
-    im.save(scratch_image_name, dpi=(200,200))
-
-def call_tesseract(input_filename, output_filename):
-    """Calls external tesseract.exe on input file (restrictions on types),
-    outputting output_filename+'txt'"""
-    args = [tesseract_exe_name, input_filename, output_filename,'-l','chi_sim']
-    #args = [tesseract_exe_name, input_filename, output_filename,'-l','normal']
-
-    proc = subprocess.Popen(args)
-    retcode = proc.wait()
-#    if retcode!=0:
-#        errors.check_for_errors()
-def image_to_string(im, cleanup = cleanup_scratch_flag):
-    """Converts im to file, applies tesseract, and fetches resulting text.
-    If cleanup=True, delete scratch files after operation."""
-    text=""
-    try:
-        image_to_scratch(im, scratch_image_name)
-        call_tesseract(scratch_image_name, scratch_text_name_root)
-        text =retrieve_text(scratch_text_name_root)
-    finally:
-        if cleanup:
-            perform_cleanup(scratch_image_name, scratch_text_name_root)
-    return text
-def	retrieve_text(scratch_text_name_root):
-    inf = open(scratch_text_name_root + '.txt','r')
-    text = inf.read()
-    inf.close()
-    return text
-
-def perform_cleanup(scratch_image_name, scratch_text_name_root):
-    """Clean up temporary files from disk"""
-    for name in (scratch_image_name, scratch_text_name_root + '.txt', "tesseract.log"):
-        try:
-            os.remove(name)
-        except OSError:
-            pass
-
-# 二值化
-threshold = 185
-table = []
-for i in range(256):
-    if i < threshold:
-        table.append(0)
-    else:
-        table.append(1)
-
-
-
-
-im = Image.open(myfile)
-pix = im.load()
-width = im.size[0]
-height = im.size[1]
-im = im.convert('L')
-
-index_x = 0
-index_y=0
-width=500
-height=500
-box = (0, 0, width, height)
-images = []
 
 img = cv2.imread(myfile,0) #直接读为灰度图像
-newimg= cv2.adaptiveThreshold(img , 255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,77,10)
+newimg= cv2.adaptiveThreshold(img , 255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,10)
 im = Image.fromarray(newimg, None)
 im.save(newfile)
 img = newimg
-#图片切割
-while index_x <im.size[0] :
-    while index_y<im.size[1] :
-        #print(index_x,index_y);
-        box = (index_x, index_y, index_x+width, index_y+height)
-        img_out_path = newfile_dir + '/%d_%d.jpg' % (index_x, index_y)
-        region = im.crop(box)
-        region.save(img_out_path)
-        #im.paste(region, box)
-        index_y+=height
-    index_x+=width
-    index_y=0
-#轮廓的检测
 #
 image, cnts, hierarchy = cv2.findContours(img.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 img= cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
-#查找角度
-same_point_num_map={}
-same_point_num_max=0
-same_point_max=[]
-same_point__max_cnts=[]
+
+
+class Invoice(object):
+    same_point_map={}
+    same_point_area_map = {}
+    same_point_num_max=0
+    same_point_max=[]
+    same_point__max_cnts=[]
+
+    def same_point_process(self,point,c):
+        (x, y, w, h) = point
+        self.same_point_area_map[cv2.contourArea(c)]=c
+        self.same_point_one_process(x,y,c,1,point)
+        self.same_point_one_process(x+w, y,c,2,point)
+        self.same_point_one_process(x, y+h,c,3,point)
+        self.same_point_one_process(x+w, y + h,c,4,point)
+
+    def same_point_one_process(self,x,y,c,l,point):
+        same_key = str(l) + '_' + str(x)+'_'+str(y)
+        same_point = self.same_point_map.get(same_key)
+        if same_point == None:
+            same_point =[]
+        same_point_num = len(same_point)
+        node ={}
+        node['x']=point[0]
+        node['y']=point[1]
+        node['w']=point[2]
+        node['h']=point[3]
+        node['px'] = x
+        node['py'] = y
+        node['l']=l
+        same_point.append(node)
+        self.same_point_map[same_key]=same_point
+
+
+invoice = Invoice()
 for c in cnts:
     (x, y, w, h) = cv2.boundingRect(c)
-    same_key = x+'_'+y
-    same_point_num = same_point_num_map[same_key]
-    if same_point_num != None :
-        same_point_num+=1
-    else:
-        same_point_num=0
-    same_point_num_map[same_key]=same_point_num
-    if same_point_num > same_point_num_max :
-        same_point_num_max = same_point_num
-        same_point_max=(x, y)
-        same_point__max_cnts.append((x, y, w, h))
+
+    invoice.same_point_process((x, y, w, h),c)
+
+#invoice.offset(1)
+#print(invoice.same_point_area_map)
+min_x_y=10000000
+max_x_y=-1
+max_x=-1
+max_y=-1
+
+LT_point=-1
+RB_point=-1
+RT_point=-1
+LB_point=-1
+sort_keys = sorted(invoice.same_point_area_map.keys())
+for i in range(-2,-1) :
+    c = invoice.same_point_area_map.get(sort_keys[i])
+    #(x, y, w, h) = cv2.boundingRect(c)
+    #cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+    for cc in c :
+        #print(cc)
+        x = cc[0][0]
+        y = cc[0][1]
+        if x+y < min_x_y:
+            min_x_y =x+y
+            LT_point=[x,y]
+        if x+y > max_x_y:
+            max_x_y = x+y
+            RB_point = [x, y]
+        if x-y >max_x:
+            max_x =x-y
+            RT_point=[x,y]
+        if y-x > max_y:
+            max_y = y-x
+            LB_point = [x, y]
+
+    cv2.drawContours(img, c, -1, (0, 255,0 ), 10)
+    #print(sort_keys[i])
+
+print(LT_point,LB_point,RT_point,RB_point)
+
+
+def drawRect(img,point,size):
+    x=point[0]
+    y=point[1]
+    w=size
+    h=size
     cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
-cv2.imwrite(my_file_2,img)
+
+drawRect(img,LT_point,10)
+drawRect(img,RB_point,10)
+drawRect(img,RT_point,10)
+drawRect(img,LB_point,10)
+cv2.imwrite(my_file_2, img)
+
+
+
+
+#矫正处理
+height , width , channels = img.shape
+pts1 = np.float32([LT_point, RT_point, LB_point,RB_point])
+pts2 = np.float32([[0, 0], [width, 0], [0, height], [width, height]])
+PerspectiveMatrix = cv2.getPerspectiveTransform(pts1,pts2)
+img = cv2.warpPerspective(img, PerspectiveMatrix, (width, height))
+cv2.imwrite(my_file_3, img)
 
