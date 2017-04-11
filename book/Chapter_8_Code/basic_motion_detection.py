@@ -19,17 +19,17 @@ while (True):
   diff = cv2.absdiff(background, gray_frame)
   diff = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)[1]
   diff = cv2.dilate(diff, es, iterations = 2)
-  image, cnts, hierarchy = cv2.findContours(diff.copy(), cv2.RETR_FLOODFILL, cv2.CHAIN_APPROX_SIMPLE)
+  image, cnts, hierarchy = cv2.findContours(diff.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
   
   for c in cnts:
-    if cv2.contourArea(c) < 2000:
+    if cv2.contourArea(c) < 1500:
       continue
     (x, y, w, h) = cv2.boundingRect(c)
     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
   
   cv2.imshow("contours", frame)
   cv2.imshow("dif", diff)
-  if cv2.waitKey(1000 // 12) & 0xff == ord("q"):
+  if cv2.waitKey(1000 / 12) & 0xff == ord("q"):
       break
 
 cv2.destroyAllWindows()

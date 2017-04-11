@@ -59,7 +59,7 @@ class Pedestrian():
     self.update(frame)
     
   def __del__(self):
-    print("Pedestrian %d destroyed" % self.id)
+    print "Pedestrian %d destroyed" % self.id
 
   def update(self, frame):
     # print "updating %d " % self.id
@@ -118,10 +118,10 @@ def main():
   fourcc = cv2.VideoWriter_fourcc(*'XVID')
   out = cv2.VideoWriter('output.avi',fourcc, 20.0, (640,480))
   while True:
-    print(" -------------------- FRAME %d --------------------" % frames)
+    print " -------------------- FRAME %d --------------------" % frames
     grabbed, frane = camera.read()
     if (grabbed is False):
-      print("failed to grab frame.")
+      print "failed to grab frame."
       break
 
     ret, frame = camera.read()
