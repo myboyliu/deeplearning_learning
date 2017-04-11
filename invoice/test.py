@@ -7,13 +7,13 @@ import numpy as np
 
 py_dir = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(py_dir)
-myfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk.jpg"
+myfile = project_dir+"/data/invoice/build_img/09089630-6405-43cg-4l28-n204ag3t5dtk.jpg"
 #二值化图片
-newfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg"
+newfile = project_dir+"/data/invoice/build_img/09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg"
 #方格检测图片
-my_file_1 = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_1.jpg"
+my_file_1 = project_dir+"/data/invoice/build_img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_1.jpg"
 
-newfile_dir = project_dir+"/data/invoice/img"
+newfile_dir = project_dir+"/data/invoice/build_img"
 tesseract_exe_name = 'tesseract' # Name of executable to be called at command line
 scratch_image_name = "temp.bmp" # This file must be .bmp or other Tesseract-compatible format
 scratch_text_name_root = "temp" # Leave out the .txt extension
@@ -118,11 +118,11 @@ while index_x <im.size[0] :
 #切割后的图片检测
 
 
-#img = cv2.GaussianBlur(newimg,(5,5),0)
-#img=newimg
-#edges = cv2.Canny(img, 10, 200, 5)
+#build_img = cv2.GaussianBlur(newimg,(5,5),0)
+#build_img=newimg
+#edges = cv2.Canny(build_img, 10, 200, 5)
 #lines = cv2.HoughLines(edges,1,np.pi/180,118)
-#result = img.copy()
+#result = build_img.copy()
 
 #经验参数
 #minLineLength = 50
@@ -130,14 +130,14 @@ while index_x <im.size[0] :
 #lines = cv2.HoughLinesP(edges,1,np.pi/180,50,minLineLength,maxLineGap)
 #print(len(lines))
 #index_line=0;
-#img= cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+#build_img= cv2.cvtColor(build_img,cv2.COLOR_GRAY2RGB)
 #while index_line<len(lines) :
 #    for x1,y1,x2,y2 in lines[index_line]:
-#        cv2.line(img,(x1,y1),(x2,y2),(0,155,0),10)
+#        cv2.line(build_img,(x1,y1),(x2,y2),(0,155,0),10)
 #    index_line+=1;
 
 
-#im = Image.fromarray(img, None)
+#im = Image.fromarray(build_img, None)
 #im.save(newfile)
 #
 #box = (0, 1000, 500, 1500)

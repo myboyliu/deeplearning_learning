@@ -62,7 +62,7 @@ def change_tb(src_path,out_path):
 
     print(len(cnts))
     #print(cnts)
-    #img = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+    #build_img = cv2.cvtColor(build_img,cv2.COLOR_GRAY2BGR)
     mark=None
     area_map = {}
     for c in cnts:
@@ -82,8 +82,8 @@ def change_tb(src_path,out_path):
         area_map[area] = c
         #if area < 100000 :
         #    continue
-        #cv2.drawContours(img, c, -1, (0, 255, 0), 10)
-        #cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+        #cv2.drawContours(build_img, c, -1, (0, 255, 0), 10)
+        #cv2.rectangle(build_img, (x, y), (x + w, y + h), (255, 255, 0), 2)
         if w > mark_width_max:
             continue
         if  w <mark_width_min :
@@ -99,7 +99,7 @@ def change_tb(src_path,out_path):
         #print(img_width*img_height)
         img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
         mark=c
-    #cv2.imwrite(out_path,img)
+    #cv2.imwrite(out_path,build_img)
     (x, y, w, h) = cv2.boundingRect(c)
     #print('why tb:',y+h,img_height)
     if y+h > img_height/2 and y+h<img_height:
@@ -107,5 +107,5 @@ def change_tb(src_path,out_path):
         pts2 = np.float32([[img_width, img_height], [0, 0], [img_width, 0]])
         M = cv2.getAffineTransform(pts1, pts2)
         img = cv2.warpAffine(img, M, (img_width, img_height))
-    #cv2.imwrite(out_path, img)
+    #cv2.imwrite(out_path, build_img)
 

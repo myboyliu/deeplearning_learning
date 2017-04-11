@@ -19,7 +19,7 @@ detect = cv2.xfeatures2d.SIFT_create()
 
 w, h = 100, 40
 img = cv2.imread(img_path)
-#img = cv2.imread(test_image)
+#build_img = cv2.imread(test_image)
 
 rectangles = []
 counter = 1
@@ -58,5 +58,5 @@ for (x, y, x2, y2, score) in boxes:
   cv2.rectangle(img, (int(x),int(y)),(int(x2), int(y2)),(0, 255, 0), 1)
   cv2.putText(img, "%f" % score, (int(x),int(y)), font, 1, (0, 255, 0))
 
-cv2.imshow("img", img)
+cv2.imshow("build_img", img)
 cv2.waitKey(0)

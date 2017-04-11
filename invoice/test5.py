@@ -4,10 +4,10 @@ from PIL import Image
 import subprocess
 import cv2
 import numpy as np
-import resize
-import change
-import check
-import data
+import invoice.build_img.resize as resize
+import invoice.build_img.data as data
+import invoice.build_img.change as change
+import invoice.build_img.check as check
 #公共参数
 py_dir = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(py_dir)
@@ -65,6 +65,7 @@ for img in imgs:
 
 
         #图片切割
+
 
 
 
