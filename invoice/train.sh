@@ -3,7 +3,7 @@
 filepath=$(cd "$(dirname "$0")";cd ../; pwd)		#父级目录
 
 train_img_dir=$filepath'/data/invoice/img/'
-train_img_file='09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg'
+train_img_file='00247780-8553-7b63-d8b1-n202a134b354/box/1/cardno_pre.jpg'
 train_img_file_path=$train_img_dir$train_img_file
 echo 'training:'$train_img_file_path
 train_dir=$filepath'/data/invoice/train/'
@@ -54,4 +54,8 @@ combine_tessdata normal.
 
 cp -f $train_dir/normal.traineddata $tesseract_test_data_dir
 
-python3 $test_python_path
+
+
+/usr/local/bin/tesseract $train_img_file_path $train_img_dir/temp.txt -l chi_sim
+
+#python3 $test_python_path

@@ -29,7 +29,7 @@ while (True):
   
   cv2.imshow("contours", frame)
   cv2.imshow("dif", diff)
-  if cv2.waitKey(1000 / 12) & 0xff == ord("q"):
+  if cv2.waitKey(1000 // 12) & 0xff == ord("q"):
       break
 
 cv2.destroyAllWindows()

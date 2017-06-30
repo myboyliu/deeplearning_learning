@@ -7,13 +7,13 @@ import numpy as np
 
 py_dir = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(py_dir)
-myfile = project_dir+"/data/invoice/build_img/09089630-6405-43cg-4l28-n204ag3t5dtk.jpg"
+myfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk.jpg"
 #二值化图片
-newfile = project_dir+"/data/invoice/build_img/09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg"
+newfile = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new.jpg"
 #方格检测图片
-my_file_1 = project_dir+"/data/invoice/build_img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_1.jpg"
+my_file_1 = project_dir+"/data/invoice/img/09089630-6405-43cg-4l28-n204ag3t5dtk_new_1.jpg"
 
-newfile_dir = project_dir+"/data/invoice/build_img"
+newfile_dir = project_dir+"/data/invoice/img"
 tesseract_exe_name = 'tesseract' # Name of executable to be called at command line
 scratch_image_name = "temp.bmp" # This file must be .bmp or other Tesseract-compatible format
 scratch_text_name_root = "temp" # Leave out the .txt extension

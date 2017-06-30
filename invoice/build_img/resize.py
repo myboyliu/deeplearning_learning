@@ -9,7 +9,9 @@ import numpy as np
 #将图片设置为宽度必须等于width的图片
 
 
-def resize(src_path,out_path,width):
+def resize(src_path,out_path,width,height=0):
+    if height==0:
+        height=width*0.7
     print("src_path:"+src_path)
     if os.path.exists(src_path):
         img = cv2.imread(src_path)
@@ -17,7 +19,7 @@ def resize(src_path,out_path,width):
         img_width = img.shape[1]
         print("width:",img_width)
         print("height:",img_height)
-        img = cv2.resize(img, (width, round(width*0.7)), interpolation=cv2.INTER_CUBIC)
+        img = cv2.resize(img, (width, round(height)), interpolation=cv2.INTER_CUBIC)
         print(out_path)
         out_dir_path = os.path.dirname(out_path)
         print(out_dir_path)
